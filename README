@@ -1,12 +1,12 @@
-Työkalu Origo konversioon.
+# Origo Migration.
 
-Ohjeita:
+## Ohjeita:
 
--Käy vaihtamassa tietokantayhteydet tiedostoista ja lisää oikeat destinationdb ja sourcedb.
+- Käy vaihtamassa tietokantayhteydet tiedostoista ja lisää oikeat destinationdb ja sourcedb.
 - Aja ensin add_origo_to_temp.pl ja tarkista vastaako temp-tietokanta tiedostojen sisältöä. Origon data siirretään väliaikaiseen tietokantaan, josta sitä aletaan siirtämään Kohaan. Tämä helpottaa korjaamista, koska voi palata yksittäiseen siirtoon uudestaan.
 - Muokkaa tiedostojen sql-kyselyt vastaamaan omaa dumppiasi. Voi olla eroja esim. Toimitetun ja itse ottaman dumpin välillä. Jos Koha-kannassa ei ole dataa entuudestaan voit poistaa vanhat tiedot truncate-komennolla, muuten pidä ne kommentoituina.
--Muuta kirjastoasi vastaavat arvot funktioihin skriptin sisällä.
--add_aqorders.pl tiedostossa on myös signumin luonti. Jos dumppi on toimitettu teokset-taulussa ei välttämättä ole pääsanaa ja luokkaa.
+- Muuta kirjastoasi vastaavat arvot funktioihin skriptin sisällä.
+- add_aqorders.pl tiedostossa on myös signumin luonti. Jos dumppi on toimitettu teokset-taulussa ei välttämättä ole pääsanaa ja luokkaa.
 
 1. add_origo_to_temp.pl
 2. add_authorised_values.pl - ei pakollinen jos arvot tuotu Kohaan jo aikaisemmin.
