@@ -30,22 +30,22 @@ my $today = C4::Dates->new();
 
 my $start = time();
 
-my $teokset=$dbh->prepare("SELECT tauluId, Nimeke, Paasana, Tunnus, Julkaisuaika, Nimio FROM ".$sourcedb.".teokset where Del = '0';");
+my $teokset=$dbh->prepare("SELECT tauluId, Nimio FROM ".$sourcedb.".Teos;");
 $teokset->execute;
 
-my $teokset_rest = $dbh->prepare("select t.tauluId, t.Nimio from ".$destinationdb.".items i
-join ".$sourcedb.".niteet n on i.barcode = n.Viivakoodi
-join ".$sourcedb.".teokset_uusi t on n.TeosID = concat('{',t.tauluId,'}')
-where i.biblionumber = 0;");
+# my $teokset_rest = $dbh->prepare("select t.tauluId, t.Nimio from ".$destinationdb.".items i
+# join ".$sourcedb.".niteet n on i.barcode = n.Viivakoodi
+# join ".$sourcedb.".teokset_uusi t on n.TeosID = concat('{',t.tauluId,'}')
+# where i.biblionumber = 0;");
 
-$teokset_rest->execute;
+# $teokset_rest->execute;
 
 my $row = 0;
 
 open my $fh, '>', $destination or die "Cannot open finmarc.xml: $!";
 print $fh "<?xml version=\"1.0\" ?>\n";
 
-while (my $biblio = $teokset_rest->fetchrow_hashref){
+while (my $biblio = $teokset->fetchrow_hashref){
     print Dumper $biblio;
     my $marc = get_marc($biblio->{tauluId}, parse_data($biblio->{Nimio}));
     #print Dumper $marc;
@@ -70,7 +70,7 @@ sub get_marc {
     $id =~ s/\x00//g;
     $id =~ s/{//g;
     $id =~ s/}//g;
-    my $query = "SELECT Kentta, KentanIndeksi, Indikaattori1, Indikaattori2, Osakentta, OsakentanIndeksi, Sisalto FROM ".$sourcedb.".marc_uusi where TeosID = ? and Kentta != '35'";
+    my $query = "SELECT Kentta, KentanIndeksi, Indikaattori1, Indikaattori2, Osakentta, OsakentanIndeksi, Sisalto FROM ".$sourcedb.".Marc where TeosID = ? and Kentta != '35'";
     my $sth=$dbh->prepare($query);
     $sth->execute($id);
     my @marcs;
